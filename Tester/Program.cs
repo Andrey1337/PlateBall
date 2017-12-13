@@ -16,28 +16,17 @@ namespace Tester
     {
         static void Main(string[] args)
         {
-            EventBasedNetListener listener = new EventBasedNetListener();
-            NetManager server = new NetManager(listener, 2 /* maximum clients */, "SomeConnectionKey");
-            server.Start(9050 /* port */);
+            Server server = new Server();
+            server.Start();
 
-            listener.PeerConnectedEvent += peer =>
-            {
-                Console.WriteLine("We got connection: {0}", peer.EndPoint); // Show peer ip
-                NetDataWriter writer = new NetDataWriter();                 // Create writer class
-                writer.Put("Hello client!");                                // Put some string
-                peer.Send(writer, SendOptions.ReliableOrdered);             // Send with reliability
-            };
+            Client client1 = new Client("Andrey");
+            client1.Connect("localhost");
 
-            while (!Console.KeyAvailable)
-            {
-                server.PollEvents();
-                Thread.Sleep(15);
-            }
-
-            server.Stop();
-
-
-
+            Client client2 = new Client("Vanya");
+            client2.Connect("localhost");
+                                     
         }
+
     }
 }
+
