@@ -32,15 +32,7 @@ namespace Tester
                         Client2 = new ConnectedClient() { Name = dataReader.GetString(100), Ip = fromPeer.EndPoint.ToString() };
 
                     Console.WriteLine($"{Client1.Name} {Client2.Name}");
-                };
-
-                //listener.PeerConnectedEvent += peer =>
-                //{
-                //    Console.WriteLine("We got connection: {0}", peer.EndPoint); // Show peer ip
-                //    NetDataWriter writer = new NetDataWriter(); // Create writer class
-                //    writer.Put("Hello client!"); // Put some string
-                //    peer.Send(writer, SendOptions.ReliableOrdered); // Send with reliability
-                //};
+                };                
 
                 while (!Console.KeyAvailable)
                 {
