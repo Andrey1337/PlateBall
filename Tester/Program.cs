@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using PlateBall.Server;
+
 
 namespace Tester
 {
@@ -19,12 +21,10 @@ namespace Tester
             Server server = new Server();
             server.Start();
 
-            Client client1 = new Client("Andrey");
-            client1.Connect("localhost");
+            Client client = new Client("Andrey", new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+            client.Connect();
 
-            Client client2 = new Client("Vanya");
-            client2.Connect("localhost");
-                                     
+            Console.ReadLine();
         }
 
     }
