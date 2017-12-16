@@ -18,7 +18,8 @@ namespace PlateBall.Server
                 {
                     var remoteEP = new IPEndPoint(IPAddress.Any, 11000);
                     var data = udpServer.Receive(ref remoteEP); // listen on port 11000
-                    data.ToList().ForEach(item => Console.WriteLine(item));
+                    Package package = Package.Desserialize(data);
+                    Console.WriteLine($"Succes!!! {package.Data}");
                     Console.Write("receive data from " + remoteEP.ToString());
                     udpServer.Send(new byte[] { 1 }, 1, remoteEP); // reply back
                 }

@@ -24,8 +24,10 @@ namespace PlateBall.Server
             client.Connect(ep);
 
             // send data
-            var package = new Package(1, new byte[] { 1, 2 });
-            client.Send(package.Serialize(), sizeof(Package));
+            var package = new Package(3, "SHALOM");
+            client.Send(package.Serialize(), package.Serialize().Length);
+            //client.Send(new byte[] { 1, 2 }, 2);
+            //client.Send(new byte[] { 1, 2 }, 2);
 
             // then receive data
             var receivedData = client.Receive(ref ep);
