@@ -1,14 +1,16 @@
 ﻿using System;
 using System.IO;
 
-namespace PlateBall.Server
+namespace PlateBall.Server.PackageFormat
 {
     public class Package
     {
+        public int Key { get; set; }
         public byte Command { get; set; }
         public string Data { get; set; }
         public Package(byte command = Byte.MinValue, string data = null)
         {
+            
             Command = command;
             Data = data;
         }

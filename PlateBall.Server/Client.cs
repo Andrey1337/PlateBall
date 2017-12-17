@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using PlateBall.Server.Utility;
+using System.Threading;
+using Newtonsoft.Json;
+using PlateBall.Server.PackageFormat;
 
 namespace PlateBall.Server
 {
@@ -11,10 +14,15 @@ namespace PlateBall.Server
     {
         public string ClientName { get; }
         public IPEndPoint IpEndPoint { get; }
-        public Client(string clientName, IPEndPoint ipEndPoint)
+        public int ConnectionKey { get; set; }
+        public int Port { get; set; }
+        public bool IsConnected { get; set; }
+        public Client(string clientName, int recievePort, IPEndPoint ipEndPoint)
         {
             ClientName = clientName;
             IpEndPoint = ipEndPoint;
+            Port = recievePort;
+            RecieveListener();
         }
 
         public void Connect()
@@ -22,17 +30,46 @@ namespace PlateBall.Server
             var client = new UdpClient();
             IPEndPoint ep = IpEndPoint;
             client.Connect(ep);
-
-            // send data
-            var package = new Package(3, "SHALOM");
+            var package = new Package(1, JsonConvert.SerializeObject(new ConnectPackageFormat(ClientName, Port)));
             client.Send(package.Serialize(), package.Serialize().Length);
-            //client.Send(new byte[] { 1, 2 }, 2);
-            //client.Send(new byte[] { 1, 2 }, 2);
+            client.Close();
+        }
 
-            // then receive data
-            var receivedData = client.Receive(ref ep);
+        public void StartGame()
+        {
+            var client = new UdpClient();
+            IPEndPoint ep = IpEndPoint;
+            client.Connect(ep);
+            var package = new Package(1, JsonConvert.SerializeObject(new ConnectPackageFormat(ClientName, Port)));
+            client.Send(package.Serialize(), package.Serialize().Length);
+            client.Close();
+        }
 
-            Console.Write("receive data from " + ep);
+        public void RecieveListener()
+        {
+            Thread listener = new Thread(() =>
+                {
+                    UdpClient udpServer = new UdpClient(Port);
+                    while (true)
+                    {
+                        var remoteEP = new IPEndPoint(IPAddress.Any, Port);
+                        var data = udpServer.Receive(ref remoteEP);
+                        Package package = Package.Desserialize(data);
+                        switch (package.Command)
+                        {
+
+
+                            case 95:
+                                ConnectionKey = int.Parse(package.Data);
+                                Console.WriteLine($"Connection key => {ConnectionKey}");
+                                break;
+                        }
+                        Console.WriteLine($"Recieved data => {package.Data}");
+                    }
+                }
+            );
+
+            listener.Start();
         }
     }
 }

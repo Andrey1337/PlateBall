@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using LiteNetLib;
-using LiteNetLib.Utils;
 using PlateBall.Server;
 
 
@@ -18,15 +15,19 @@ namespace Tester
     {
         static void Main(string[] args)
         {
-            Server server = new Server();
-            server.Start();
+            Server server = new Server(11000);
+            server.StartListen();
 
-            Client client = new Client("Andrey", new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
-            client.Connect();
+            Client client1 = new Client("Andrey", 64064, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+            client1.Connect();
+
+            Client client2 = new Client("Vanya", 64070, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+            client2.Connect();
+
+            Client client3 = new Client("Test", 64075, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+            client3.Connect();
 
             Console.ReadLine();
         }
-
     }
 }
-
