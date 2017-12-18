@@ -11,6 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateBall.Server", "PlateBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Physics", "Physics", "{BD3391F1-AA94-4EF3-B4BD-3AFDCCA1CD22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples XNA", "Farseer Physics Engine 3.5 Samples\Farseer Physics Samples 3.5\Samples XNA.csproj", "{3681ADA2-B2F3-4157-A603-82C742379856}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics XNA", "Farseer Physics Engine 3.5 Samples\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj", "{0A850700-1ABB-4288-A391-6726B90EBEB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugView XNA", "Farseer Physics Engine 3.5 Samples\Farseer Physics DebugView 3.5\DebugView XNA.csproj", "{FC7845FA-13FE-4FF8-822A-A577F3F59B00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +28,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{90F91D9D-DA55-4F22-BC74-7FF70341D253}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{90F91D9D-DA55-4F22-BC74-7FF70341D253}.Debug|Any CPU.Build.0 = Debug|x86
 		{90F91D9D-DA55-4F22-BC74-7FF70341D253}.Debug|x86.ActiveCfg = Debug|x86
 		{90F91D9D-DA55-4F22-BC74-7FF70341D253}.Debug|x86.Build.0 = Debug|x86
 		{90F91D9D-DA55-4F22-BC74-7FF70341D253}.Release|Any CPU.ActiveCfg = Release|x86
@@ -45,8 +54,34 @@ Global
 		{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}.Release|x86.ActiveCfg = Release|Any CPU
 		{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}.Release|x86.Build.0 = Release|Any CPU
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Debug|Any CPU.Build.0 = Debug|x86
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Debug|x86.ActiveCfg = Debug|x86
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Debug|x86.Build.0 = Debug|x86
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Release|Any CPU.ActiveCfg = Release|x86
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Release|x86.ActiveCfg = Release|x86
+		{3681ADA2-B2F3-4157-A603-82C742379856}.Release|x86.Build.0 = Release|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Debug|Any CPU.Build.0 = Debug|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Debug|x86.ActiveCfg = Debug|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Debug|x86.Build.0 = Debug|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Release|Any CPU.ActiveCfg = Release|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Release|x86.ActiveCfg = Release|x86
+		{0A850700-1ABB-4288-A391-6726B90EBEB9}.Release|x86.Build.0 = Release|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Debug|Any CPU.Build.0 = Debug|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Debug|x86.ActiveCfg = Debug|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Debug|x86.Build.0 = Debug|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Release|Any CPU.ActiveCfg = Release|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Release|x86.ActiveCfg = Release|x86
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3681ADA2-B2F3-4157-A603-82C742379856} = {BD3391F1-AA94-4EF3-B4BD-3AFDCCA1CD22}
+		{0A850700-1ABB-4288-A391-6726B90EBEB9} = {BD3391F1-AA94-4EF3-B4BD-3AFDCCA1CD22}
+		{FC7845FA-13FE-4FF8-822A-A577F3F59B00} = {BD3391F1-AA94-4EF3-B4BD-3AFDCCA1CD22}
 	EndGlobalSection
 EndGlobal

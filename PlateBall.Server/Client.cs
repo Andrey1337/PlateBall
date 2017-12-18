@@ -25,13 +25,17 @@ namespace PlateBall.Server
             RecieveListener();
         }
 
+        private DateTime starTime;
+
         public void Connect()
         {
+
             var client = new UdpClient();
             IPEndPoint ep = IpEndPoint;
             client.Connect(ep);
             var package = new Package(1, JsonConvert.SerializeObject(new ConnectPackageFormat(ClientName, Port)));
             client.Send(package.Serialize(), package.Serialize().Length);
+            starTime = DateTime.Now;
             client.Close();
         }
 
@@ -40,8 +44,9 @@ namespace PlateBall.Server
             var client = new UdpClient();
             IPEndPoint ep = IpEndPoint;
             client.Connect(ep);
-            var package = new Package(1, JsonConvert.SerializeObject(new ConnectPackageFormat(ClientName, Port)));
+            var package = new Package(2, JsonConvert.SerializeObject(new SessionConnectionFormat(ConnectionKey, "HELOU")));
             client.Send(package.Serialize(), package.Serialize().Length);
+
             client.Close();
         }
 
@@ -57,8 +62,6 @@ namespace PlateBall.Server
                         Package package = Package.Desserialize(data);
                         switch (package.Command)
                         {
-
-
                             case 95:
                                 ConnectionKey = int.Parse(package.Data);
                                 Console.WriteLine($"Connection key => {ConnectionKey}");

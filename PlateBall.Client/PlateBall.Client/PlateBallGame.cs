@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using FarseerPhysics.Samples.ScreenSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -16,20 +17,39 @@ namespace PlateBall.Client
 {
     public class PlateBallGame : Game
     {
-        GraphicsDeviceManager graphics;
+
+        public ScreenManager ScreenManager { get; set; }
+        private readonly GraphicsDeviceManager _graphics;
         SpriteBatch spriteBatch;
 
         public PlateBallGame()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 900;
-            graphics.PreferredBackBufferWidth = 600;
+            _graphics.PreferredBackBufferWidth = 900;
+            _graphics.PreferredBackBufferHeight = 900;
+
+            ScreenManager = new ScreenManager(this);
+            Components.Add(ScreenManager);
+
+            FrameRateCounter frameRateCounter = new FrameRateCounter(ScreenManager);
+            frameRateCounter.DrawOrder = 101;
+            Components.Add(frameRateCounter);
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            MenuScreen menuScreen = new MenuScreen("Plate Ball");
+
+            menuScreen.AddMenuItem("", EntryType.Separator, null);
+
+            menuScreen.AddMenuItem("", EntryType.Separator, null);
+            menuScreen.AddMenuItem("Exit", EntryType.ExitItem, null);
+
+
+            ScreenManager.AddScreen(new BackgroundScreen());
+            ScreenManager.AddScreen(menuScreen);
+            //ScreenManager.AddScreen(new LogoScreen(TimeSpan.FromSeconds(2.0)));
 
             base.Initialize();
         }
@@ -37,14 +57,11 @@ namespace PlateBall.Client
         protected override void LoadContent()
         {
 
-            Debug.Write("send");
         }
 
 
         protected override void Update(GameTime gameTime)
         {
-
-
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -54,8 +71,6 @@ namespace PlateBall.Client
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

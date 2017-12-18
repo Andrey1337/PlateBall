@@ -10,7 +10,6 @@ namespace PlateBall.Server.PackageFormat
         public string Data { get; set; }
         public Package(byte command = Byte.MinValue, string data = null)
         {
-            
             Command = command;
             Data = data;
         }

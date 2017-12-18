@@ -83,6 +83,18 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Farseer Physics Engine 3.5 Samples\Farseer Physics DebugView 3.5\DebugView XNA.csproj">
+      <Project>{fc7845fa-13fe-4ff8-822a-a577f3f59b00}</Project>
+      <Name>DebugView XNA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Farseer Physics Engine 3.5 Samples\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj">
+      <Project>{0a850700-1abb-4288-a391-6726b90ebeb9}</Project>
+      <Name>Farseer Physics XNA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Farseer Physics Engine 3.5 Samples\Farseer Physics Samples 3.5\Samples XNA.csproj">
+      <Project>{3681ada2-b2f3-4157-a603-82c742379856}</Project>
+      <Name>Samples XNA</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PlateBall.Server\PlateBall.Server.csproj">
       <Project>{eeb8df80-7a91-4fc8-9ab3-7441f757ade5}</Project>
       <Name>PlateBall.Server</Name>
