@@ -22,7 +22,6 @@ namespace PlateBall.Client.Screens
         public Server.Server Server { get; set; }
 
         public bool IsGameStarted { get; }
-
         public PlateBallGameScreen(ContentManager contentManager, GraphicsDeviceManager graphics)
         {
             _contentManager = contentManager;
@@ -34,11 +33,11 @@ namespace PlateBall.Client.Screens
 
         public override void LoadContent()
         {
+            Server.Server server = new Server.Server(11000);
+            server.StartListen();
+
             Thread connectThread = new Thread(() =>
             {
-                Server.Server server = new Server.Server(11000);
-                server.StartListen();
-
                 Server.Client client1 = new Server.Client("Andrey", 64064,
                     new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
                 client1.Connect();
@@ -46,9 +45,7 @@ namespace PlateBall.Client.Screens
                 Thread.Sleep(1000);
                 client1.StartGame();
             });
-            connectThread.Start();
-
-            //Debug.WriteLine(client.ConnectionKey);            
+            connectThread.Start();             
 
             GameWorld = new PlateBallWorld(new Vector2(0, 0), this);
             GameWorld.Load(_contentManager);

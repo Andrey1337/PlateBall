@@ -82,7 +82,6 @@ namespace PlateBall.Server
                 Console.WriteLine(ClientInfo2.Name);
                 return;
             }
-
         }
 
         private void StartGameRequest(IPEndPoint ipAdress, Package package)

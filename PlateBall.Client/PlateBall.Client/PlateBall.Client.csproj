@@ -76,7 +76,6 @@
     <Compile Include="InputSystem\KeyboardDispatcher.cs" />
     <Compile Include="InputSystem\TextBox.cs" />
     <Compile Include="Player\Player.cs" />
-    <Compile Include="Screens\InputHostAdressScreen.cs" />
     <Compile Include="Screens\PlateBallGameScreen.cs" />
     <Compile Include="PlateBallWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,7 +102,7 @@
       <Name>Samples XNA</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\PlateBall.Server\PlateBall.Server.csproj">
-      <Project>{eeb8df80-7a91-4fc8-9ab3-7441f757ade5}</Project>
+      <Project>{334e07f5-9c02-44b6-b1e4-2961f2ff1882}</Project>
       <Name>PlateBall.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlateBall.ClientContent\PlateBall.ClientContent.contentproj">

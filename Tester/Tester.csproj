@@ -55,12 +55,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PlateBall.Server\PlateBall.Server.csproj">
-      <Project>{eeb8df80-7a91-4fc8-9ab3-7441f757ade5}</Project>
-      <Name>PlateBall.Server</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

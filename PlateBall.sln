@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateBall.Client", "PlateBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateBall.ClientContent", "PlateBall.Client\PlateBall.ClientContent\PlateBall.ClientContent.contentproj", "{AB5A4225-DA93-4792-AA33-3F19729802C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateBall.Server", "PlateBall.Server\PlateBall.Server.csproj", "{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Physics", "Physics", "{BD3391F1-AA94-4EF3-B4BD-3AFDCCA1CD22}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics XNA", "Farseer Physics Engine 3.5 Samples\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj", "{0A850700-1ABB-4288-A391-6726B90EBEB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugView XNA", "Farseer Physics Engine 3.5 Samples\Farseer Physics DebugView 3.5\DebugView XNA.csproj", "{FC7845FA-13FE-4FF8-822A-A577F3F59B00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateBall.Server", "PlateBall.Server\PlateBall.Server.csproj", "{334E07F5-9C02-44B6-B1E4-2961F2FF1882}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +39,6 @@ Global
 		{AB5A4225-DA93-4792-AA33-3F19729802C9}.Debug|x86.ActiveCfg = Debug|x86
 		{AB5A4225-DA93-4792-AA33-3F19729802C9}.Release|Any CPU.ActiveCfg = Release|x86
 		{AB5A4225-DA93-4792-AA33-3F19729802C9}.Release|x86.ActiveCfg = Release|x86
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Debug|x86.Build.0 = Debug|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Release|x86.ActiveCfg = Release|Any CPU
-		{EEB8DF80-7A91-4FC8-9AB3-7441F757ADE5}.Release|x86.Build.0 = Release|Any CPU
 		{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ECF0CE5-A3F6-4882-A0EA-4A0407C30366}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -73,6 +65,13 @@ Global
 		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Release|Any CPU.ActiveCfg = Release|x86
 		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Release|x86.ActiveCfg = Release|x86
 		{FC7845FA-13FE-4FF8-822A-A577F3F59B00}.Release|x86.Build.0 = Release|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Debug|Any CPU.Build.0 = Debug|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Debug|x86.ActiveCfg = Debug|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Debug|x86.Build.0 = Debug|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Release|Any CPU.ActiveCfg = Release|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Release|x86.ActiveCfg = Release|x86
+		{334E07F5-9C02-44B6-B1E4-2961F2FF1882}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

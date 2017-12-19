@@ -28,12 +28,18 @@ namespace PlateBall.Server
 
         public void Connect()
         {
-            var client = new UdpClient();
-            IPEndPoint ep = IpEndPoint;
-            client.Connect(ep);
-            var package = new Package(1, JsonConvert.SerializeObject(new ConnectPackageFormat(ClientName, Port)));
-            client.Send(package.Serialize(), package.Serialize().Length);
-            client.Close();
+            Thread serverConnectThread = new Thread(() =>
+            {
+                var client = new UdpClient();
+                IPEndPoint ep = IpEndPoint;
+
+                client.Connect(ep);
+                var package = new Package(1, JsonConvert.SerializeObject(new ConnectPackageFormat(ClientName, Port)));
+                client.Send(package.Serialize(), package.Serialize().Length);
+
+                client.Close();
+            });
+            serverConnectThread.Start();
         }
 
         public void StartGame()
@@ -49,6 +55,7 @@ namespace PlateBall.Server
                 var package = new Package(2,
                     JsonConvert.SerializeObject(new SessionConnectionFormat(ConnectionKey, "HELOU")));
                 client.Send(package.Serialize(), package.Serialize().Length);
+
                 Debug.WriteLine("start request sent");
                 client.Close();
             });
