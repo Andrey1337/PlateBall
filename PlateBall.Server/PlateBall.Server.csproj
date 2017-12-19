@@ -49,7 +49,7 @@
     <Compile Include="PackageFormat\GameInfoPackage.cs" />
     <Compile Include="PackageFormat\Package.cs" />
     <Compile Include="PackageFormat\SessionConnectionFormat.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="ClientInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -10,9 +11,8 @@ namespace PlateBall.Server
 {
     public class Server
     {
-        public Player Player1 { get; private set; }
-        public Player Player2 { get; private set; }
-
+        public ClientInfo ClientInfo1 { get; private set; }
+        public ClientInfo ClientInfo2 { get; private set; }
         public int Port { get; }
         public Random Random;
         public Server(int port)
@@ -21,11 +21,12 @@ namespace PlateBall.Server
             Random = new Random();
         }
 
+        public UdpClient udpServer { get; set; }
         public void StartListen()
         {
             Thread serverThread = new Thread(() =>
             {
-                UdpClient udpServer = new UdpClient(Port);
+                udpServer = new UdpClient(Port);
 
                 while (true)
                 {
@@ -38,6 +39,7 @@ namespace PlateBall.Server
                     {
                         case 1:
                             EnterPlayer(remoteEP, package);
+
                             break;
                         case 2:
                             StartGameRequest(remoteEP, package);
@@ -58,49 +60,51 @@ namespace PlateBall.Server
             var recieveIpAdress = new IPEndPoint(ipAdress.Address, connectPackage.Port);
             int key = Random.Next(20000);
 
-            if (Player1 != null && Player2 != null)
+            if (ClientInfo1 != null && ClientInfo2 != null)
             {
                 byte[] sendBackPackage = new Package(99, "Server full").Serialize();
                 SendRecieve(recieveIpAdress, sendBackPackage);
                 return;
             }
 
-            if (Player1 == null)
+            if (ClientInfo1 == null)
             {
-                Player1 = new Player(connectPackage.Name, recieveIpAdress, key.GetHashCode());
+                ClientInfo1 = new ClientInfo(connectPackage.Name, recieveIpAdress, key.GetHashCode());
                 SendRecieve(recieveIpAdress, new Package(95, key.ToString()).Serialize());
-                Console.WriteLine(Player1.Name);
+                Console.WriteLine(ClientInfo1.Name);
                 return;
             }
 
-            if (Player2 == null)
+            if (ClientInfo2 == null)
             {
-                Player2 = new Player(connectPackage.Name, recieveIpAdress, key.GetHashCode());
+                ClientInfo2 = new ClientInfo(connectPackage.Name, recieveIpAdress, key.GetHashCode());
                 SendRecieve(recieveIpAdress, new Package(95, key.ToString()).Serialize());
-                Console.WriteLine(Player2.Name);
+                Console.WriteLine(ClientInfo2.Name);
                 return;
             }
+
         }
 
         private void StartGameRequest(IPEndPoint ipAdress, Package package)
         {
             var sessionPackage = JsonConvert.DeserializeObject<SessionConnectionFormat>(package.Data);
 
-            if (sessionPackage.Key.GetHashCode() == Player1.Key)
+            if (ClientInfo1 != null && sessionPackage.Key.GetHashCode() == ClientInfo1.Key)
             {
-                Player1.StartGame = true;
+                ClientInfo1.StartGame = true;
             }
 
-            if (sessionPackage.Key.GetHashCode() == Player2.Key)
+            if (ClientInfo2 != null && sessionPackage.Key.GetHashCode() == ClientInfo2.Key)
             {
-                Player2.StartGame = true;
+                ClientInfo2.StartGame = true;
             }
 
-            if (Player1.StartGame && Player2.StartGame)
+            if (ClientInfo1 != null && ClientInfo2 != null && ClientInfo1.StartGame && ClientInfo2.StartGame)
             {
                 StartGame();
             }
-            Console.WriteLine($"{Player1.StartGame}, { Player2.StartGame}");
+
+            Debug.WriteLine($"{ClientInfo1 != null && ClientInfo1.StartGame}, { ClientInfo2 != null && ClientInfo2.StartGame}");
         }
 
         public void StartGame()

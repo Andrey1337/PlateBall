@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Samples.Demos.Prefabs;
@@ -9,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FarseerPhysics.Samples.Demos
 {
-    internal class SimpleDemo8 : PhysicsGameScreen, IDemoScreen
+    public class SimpleDemo8 : PhysicsGameScreen, IDemoScreen
     {
         private Border _border;
         private Body[] _circle = new Body[6];
@@ -48,12 +49,12 @@ namespace FarseerPhysics.Samples.Demos
         {
             base.LoadContent();
 
-            World.Gravity = new Vector2(0f, 20f);
+            World.Gravity = new Vector2(0f, 0f);
 
             _border = new Border(World, ScreenManager, Camera);
 
             Vector2 position = new Vector2(0, 0);
-            float restitution = 0f;
+            float restitution = 1.01f;
 
             for (int i = 0; i < 6; ++i)
             {
@@ -75,6 +76,7 @@ namespace FarseerPhysics.Samples.Demos
             {
                 ScreenManager.SpriteBatch.Draw(_circleSprite.Texture, ConvertUnits.ToDisplayUnits(_circle[i].Position), null, Color.White, _circle[i].Rotation, _circleSprite.Origin, 1f, SpriteEffects.None, 0f);
             }
+            Debug.WriteLine(ConvertUnits.ToDisplayUnits(_circle[0].Position));
             ScreenManager.SpriteBatch.End();
             _border.Draw();
             base.Draw(gameTime);
