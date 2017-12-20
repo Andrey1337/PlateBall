@@ -25,13 +25,14 @@ namespace PlateBall.Client
         {
             _gameScreen = gameScreen;
             Ball = BodyFactory.CreateCircle(this, 0.3f, 0.2f, new Vector2(1, 1));
-            Ball.Move(new Vector2(1f, 3f));
+            Ball.Move(new Vector2(2f, 0f));
             Ball.BodyType = BodyType.Dynamic;
             Ball.Restitution = 1.01f;
 
             _ballSprite = new Sprite(_gameScreen.ScreenManager.Assets.TextureFromShape(Ball.FixtureList[0].Shape, MaterialType.Waves, Color.Brown, 1f));
-            //border
-            BodyFactory.CreateEdge(this, new Vector2((float)_gameScreen.Graphics.PreferredBackBufferWidth / 100, 0), new Vector2((float)_gameScreen.Graphics.PreferredBackBufferWidth / 100, (float)_gameScreen.Graphics.PreferredBackBufferHeight / 100));
+            //border    
+            BodyFactory.CreateEdge(this, new Vector2((float)900 / 100, 0), new Vector2((float)900 / 100, (float)900 / 100));
+            BodyFactory.CreateEdge(this, new Vector2((float)0, 0), new Vector2(0, (float)900 / 100));
         }
 
         public void Load(ContentManager contentManager)
@@ -41,8 +42,8 @@ namespace PlateBall.Client
 
         public void Update(GameTime gameTime)
         {
-            if (!_gameScreen.IsGameStarted) return;
-
+            //if (!_gameScreen.IsGameStarted) return;
+            Debug.WriteLine(gameTime.ElapsedGameTime);
             this.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, (1f / 30f)));
         }
 

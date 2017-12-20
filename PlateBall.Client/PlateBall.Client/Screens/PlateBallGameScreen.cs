@@ -61,7 +61,7 @@ namespace PlateBall.Client.Screens
         {
             if (input.KeyboardState.IsKeyDown(Keys.Escape))
             {
-                Server.udpServer.Close();
+                Server.UdpServer.Close();
                 ExitScreen();
             }
             base.HandleInput(input, gameTime);

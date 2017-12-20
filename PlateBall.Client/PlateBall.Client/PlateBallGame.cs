@@ -36,6 +36,7 @@ namespace PlateBall.Client
             frameRateCounter.DrawOrder = 101;
             Components.Add(frameRateCounter);
         }
+        
 
         protected override void Initialize()
         {

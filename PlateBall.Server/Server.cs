@@ -13,6 +13,9 @@ namespace PlateBall.Server
     {
         public ClientInfo ClientInfo1 { get; private set; }
         public ClientInfo ClientInfo2 { get; private set; }
+        public bool IsReady { get; private set; }
+        //public PlateBallWorld 
+
         public int Port { get; }
         public Random Random;
         public Server(int port)
@@ -21,17 +24,17 @@ namespace PlateBall.Server
             Random = new Random();
         }
 
-        public UdpClient udpServer { get; set; }
+        public UdpClient UdpServer { get; set; }
         public void StartListen()
         {
             Thread serverThread = new Thread(() =>
             {
-                udpServer = new UdpClient(Port);
+                UdpServer = new UdpClient(Port);
 
                 while (true)
                 {
                     var remoteEP = new IPEndPoint(IPAddress.Any, Port);
-                    var data = udpServer.Receive(ref remoteEP);
+                    var data = UdpServer.Receive(ref remoteEP);
                     Package package = Package.Desserialize(data);
 
                     //Console.WriteLine(remoteEP);
@@ -46,7 +49,7 @@ namespace PlateBall.Server
                             break;
                         default:
                             byte[] sendBackPackage = new Package(99, "Incorect Command").Serialize();
-                            udpServer.Send(sendBackPackage, sendBackPackage.Length, remoteEP);
+                            UdpServer.Send(sendBackPackage, sendBackPackage.Length, remoteEP);
                             break;
                     }
                 }
@@ -100,15 +103,10 @@ namespace PlateBall.Server
 
             if (ClientInfo1 != null && ClientInfo2 != null && ClientInfo1.StartGame && ClientInfo2.StartGame)
             {
-                StartGame();
+                IsReady = true;
             }
 
             Debug.WriteLine($"{ClientInfo1 != null && ClientInfo1.StartGame}, { ClientInfo2 != null && ClientInfo2.StartGame}");
-        }
-
-        public void StartGame()
-        {
-
         }
 
         private void SendRecieve(IPEndPoint ipAndress, byte[] data)
