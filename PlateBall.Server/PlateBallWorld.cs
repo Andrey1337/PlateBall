@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using FarseerPhysics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
-using FarseerPhysics.Samples.DrawingSystem;
-using FarseerPhysics.Samples.ScreenSystem;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace PlateBall.Server
 {
     class PlateBallWorld : World
     {
         public Body Ball { get; }
-        private Server _server;
+        private readonly Server _server;
         public PlateBallWorld(Vector2 gravity, Server server) : base(gravity)
         {
             _server = server;

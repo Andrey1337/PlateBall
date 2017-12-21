@@ -7,7 +7,6 @@ using FarseerPhysics;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Samples.DrawingSystem;
-using FarseerPhysics.Samples.ScreenSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,11 +27,11 @@ namespace PlateBall.Client
             Ball.Move(new Vector2(2f, 0f));
             Ball.BodyType = BodyType.Dynamic;
             Ball.Restitution = 1.01f;
-
             _ballSprite = new Sprite(_gameScreen.ScreenManager.Assets.TextureFromShape(Ball.FixtureList[0].Shape, MaterialType.Waves, Color.Brown, 1f));
-            //border    
+
+            //border
             BodyFactory.CreateEdge(this, new Vector2((float)900 / 100, 0), new Vector2((float)900 / 100, (float)900 / 100));
-            BodyFactory.CreateEdge(this, new Vector2((float)0, 0), new Vector2(0, (float)900 / 100));
+            BodyFactory.CreateEdge(this, new Vector2(0, 0), new Vector2(0, (float)900 / 100));
         }
 
         public void Load(ContentManager contentManager)
