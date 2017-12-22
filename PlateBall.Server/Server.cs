@@ -11,17 +11,29 @@ namespace PlateBall.Server
 {
     public class Server
     {
+        private enum ServerState
+        {
+            WaitForPlayers,
+            Run
+        };
         public ClientInfo ClientInfo1 { get; private set; }
         public ClientInfo ClientInfo2 { get; private set; }
         public bool IsReady { get; private set; }
+        private ServerState _serverState;
         //public PlateBallWorld 
 
         public int Port { get; }
         public Random Random;
         public Server(int port)
         {
+            _serverState = ServerState.WaitForPlayers;
             Port = port;
             Random = new Random();
+        }
+
+        public void Update()
+        {
+
         }
 
         public UdpClient UdpServer { get; set; }

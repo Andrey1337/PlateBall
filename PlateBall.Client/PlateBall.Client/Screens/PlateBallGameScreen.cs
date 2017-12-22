@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace PlateBall.Client.Screens
 {
     class PlateBallGameScreen : GameScreen
