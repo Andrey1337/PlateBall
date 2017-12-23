@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PlateBall.Server.PackageFormat;
 
@@ -16,24 +17,44 @@ namespace PlateBall.Server
             WaitForPlayers,
             Run
         };
+
+        private Task _task;
+
         public ClientInfo ClientInfo1 { get; private set; }
         public ClientInfo ClientInfo2 { get; private set; }
         public bool IsReady { get; private set; }
         private ServerState _serverState;
-        //public PlateBallWorld 
+        private PlateBallWorld _world;
 
         public int Port { get; }
         public Random Random;
         public Server(int port)
         {
             _serverState = ServerState.WaitForPlayers;
+            Update();
             Port = port;
             Random = new Random();
         }
 
         public void Update()
         {
-
+            Thread updateThread = new Thread(() =>
+           {
+               if (_serverState == ServerState.Run)
+               {
+                   var lastIterationTime = DateTime.Now;
+                   var stepSize = TimeSpan.FromSeconds(0.01);
+                   while (true)
+                   {
+                       while (lastIterationTime + stepSize < DateTime.Now)
+                       {
+                           _world.Update(stepSize.Milliseconds);
+                       }
+                       lastIterationTime += stepSize;
+                   }
+               }
+           });
+            updateThread.Start();
         }
 
         public UdpClient UdpServer { get; set; }

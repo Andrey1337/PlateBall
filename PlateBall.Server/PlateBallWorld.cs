@@ -20,11 +20,11 @@ namespace PlateBall.Server
             BodyFactory.CreateEdge(this, new Vector2((float)900 / 100, 0), new Vector2((float)900 / 100, (float)900 / 100));
             BodyFactory.CreateEdge(this, new Vector2(0, 0), new Vector2(0, (float)900 / 100));
         }
-        public void Update(GameTime gameTime)
+        public void Update(double gameTime)
         {
             if (!_server.IsReady)
                 return;
-            this.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, (1f / 30f)));
+            this.Step(Math.Min((float)gameTime, (1f / 30f)));
         }
     }
 }
