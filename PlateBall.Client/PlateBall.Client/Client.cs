@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+
 using Newtonsoft.Json;
+using PlateBall.Client.Screens;
 using PlateBall.Server.PackageFormat;
 
-namespace PlateBall.Server
+namespace PlateBall.Client
 {
     public class Client
     {
@@ -18,6 +17,18 @@ namespace PlateBall.Server
         public int ConnectionKey { get; set; }
         public int Port { get; set; }
         public bool IsConnected { get; set; }
+
+        private readonly PlateBallGameScreen _gameScreen;
+
+        public Client(string clientName, int recievePort, IPEndPoint ipEndPoint, PlateBallGameScreen gameScreen)
+        {
+            _gameScreen = gameScreen;
+            ClientName = clientName;
+            IpEndPoint = ipEndPoint;
+            Port = recievePort;
+            RecieveListener();
+        }
+
         public Client(string clientName, int recievePort, IPEndPoint ipEndPoint)
         {
             ClientName = clientName;
@@ -78,6 +89,12 @@ namespace PlateBall.Server
                                 ConnectionKey = int.Parse(package.Data);
                                 IsConnected = true;
                                 Debug.WriteLine($"Client: {ClientName}, ConnectionKey: {ConnectionKey}");
+                                break;
+                            case 66:
+                                Debug.Write("GUT IT");
+
+                                _gameScreen.GameWorld.GameInfo =
+                                    JsonConvert.DeserializeObject<GameStatePackage>(package.Data);
                                 break;
                         }
                         Console.WriteLine($"Recieved data => {package.Data}");

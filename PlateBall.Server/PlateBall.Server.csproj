@@ -63,10 +63,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
     <Compile Include="ClientInfo.cs" />
     <Compile Include="PackageFormat\ConnectPackageFormat.cs" />
-    <Compile Include="PackageFormat\GameInfoPackage.cs" />
+    <Compile Include="PackageFormat\GameStatePackage.cs" />
     <Compile Include="PackageFormat\Package.cs" />
     <Compile Include="PackageFormat\SessionConnectionFormat.cs" />
     <Compile Include="PlateBallWorld.cs" />

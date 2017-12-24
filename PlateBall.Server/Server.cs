@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using FarseerPhysics;
 using Newtonsoft.Json;
 using PlateBall.Server.PackageFormat;
 
@@ -40,17 +41,30 @@ namespace PlateBall.Server
         {
             Thread updateThread = new Thread(() =>
            {
-               if (_serverState == ServerState.Run)
+               while (true)
                {
-                   var lastIterationTime = DateTime.Now;
-                   var stepSize = TimeSpan.FromSeconds(0.01);
-                   while (true)
+                   if (_serverState == ServerState.Run)
                    {
-                       while (lastIterationTime + stepSize < DateTime.Now)
+                       Debug.WriteLine("Server start to play");
+                       var lastIterationTime = DateTime.Now;
+                       var stepSize = TimeSpan.FromSeconds(0.01);
+                       while (true)
                        {
-                           _world.Update(stepSize.Milliseconds);
+                           while (lastIterationTime + stepSize < DateTime.Now)
+                           {
+                               _world.Update(stepSize.Milliseconds);
+                               byte[] sendPackage = new Package(66,
+                                       JsonConvert.SerializeObject(
+                                           new GameStatePackage(ConvertUnits.ToDisplayUnits(_world.Ball.Position))))
+                                   .Serialize();
+                               if (ClientInfo1 != null)
+                                   SendData(ClientInfo1.IpAddress, sendPackage);
+                               if (ClientInfo2 != null)
+                                   SendData(ClientInfo2.IpAddress, sendPackage);
+                           }
+
+                           lastIterationTime += stepSize;
                        }
-                       lastIterationTime += stepSize;
                    }
                }
            });
@@ -69,8 +83,6 @@ namespace PlateBall.Server
                     var remoteEP = new IPEndPoint(IPAddress.Any, Port);
                     var data = UdpServer.Receive(ref remoteEP);
                     Package package = Package.Desserialize(data);
-
-                    //Console.WriteLine(remoteEP);
                     switch (package.Command)
                     {
                         case 1:
@@ -99,14 +111,14 @@ namespace PlateBall.Server
             if (ClientInfo1 != null && ClientInfo2 != null)
             {
                 byte[] sendBackPackage = new Package(99, "Server full").Serialize();
-                SendRecieve(recieveIpAdress, sendBackPackage);
+                SendData(recieveIpAdress, sendBackPackage);
                 return;
             }
 
             if (ClientInfo1 == null)
             {
                 ClientInfo1 = new ClientInfo(connectPackage.Name, recieveIpAdress, key.GetHashCode());
-                SendRecieve(recieveIpAdress, new Package(95, key.ToString()).Serialize());
+                SendData(recieveIpAdress, new Package(95, key.ToString()).Serialize());
                 Console.WriteLine(ClientInfo1.Name);
                 return;
             }
@@ -114,7 +126,7 @@ namespace PlateBall.Server
             if (ClientInfo2 == null)
             {
                 ClientInfo2 = new ClientInfo(connectPackage.Name, recieveIpAdress, key.GetHashCode());
-                SendRecieve(recieveIpAdress, new Package(95, key.ToString()).Serialize());
+                SendData(recieveIpAdress, new Package(95, key.ToString()).Serialize());
                 Console.WriteLine(ClientInfo2.Name);
                 return;
             }
@@ -127,22 +139,24 @@ namespace PlateBall.Server
             if (ClientInfo1 != null && sessionPackage.Key.GetHashCode() == ClientInfo1.Key)
             {
                 ClientInfo1.StartGame = true;
+                _serverState = ServerState.Run;
             }
 
             if (ClientInfo2 != null && sessionPackage.Key.GetHashCode() == ClientInfo2.Key)
             {
                 ClientInfo2.StartGame = true;
+                _serverState = ServerState.Run;
             }
 
             if (ClientInfo1 != null && ClientInfo2 != null && ClientInfo1.StartGame && ClientInfo2.StartGame)
             {
-                IsReady = true;
+                _serverState = ServerState.Run;
             }
-
+            _serverState = ServerState.Run;
             Debug.WriteLine($"{ClientInfo1 != null && ClientInfo1.StartGame}, { ClientInfo2 != null && ClientInfo2.StartGame}");
         }
 
-        private void SendRecieve(IPEndPoint ipAndress, byte[] data)
+        private void SendData(IPEndPoint ipAndress, byte[] data)
         {
             UdpClient udpReciever = new UdpClient();
             udpReciever.Connect(ipAndress);

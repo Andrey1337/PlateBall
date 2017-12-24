@@ -2,7 +2,7 @@
 
 namespace PlateBall.Client.Player
 {
-    class Player
+    public class Player
     {
         public string Name { get; }
         private PlateBallWorld _world;

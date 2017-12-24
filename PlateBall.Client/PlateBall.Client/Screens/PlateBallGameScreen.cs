@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PlateBall.Client.Screens
 {
-    class PlateBallGameScreen : GameScreen
+    public class PlateBallGameScreen : GameScreen
     {
         private readonly ContentManager _contentManager;
         public readonly GraphicsDeviceManager Graphics;
@@ -32,27 +32,28 @@ namespace PlateBall.Client.Screens
 
         public override void LoadContent()
         {
+            GameWorld = new PlateBallWorld(this);
+
             Server.Server server = new Server.Server(11000);
             server.StartListen();
 
             Thread connectThread = new Thread(() =>
             {
-                Server.Client client1 = new Server.Client("Andrey", 64064,
+                Client client1 = new Client("Andrey", 64064,
                     new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
                 client1.Connect();
 
                 Thread.Sleep(1000);
                 client1.StartGame();
             });
-            connectThread.Start();             
+            connectThread.Start();
 
-            GameWorld = new PlateBallWorld(new Vector2(0, 0), this);
+
             GameWorld.Load(_contentManager);
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            GameWorld.Update(gameTime);
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 

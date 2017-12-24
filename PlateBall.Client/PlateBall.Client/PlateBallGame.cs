@@ -24,7 +24,6 @@ namespace PlateBall.Client
             frameRateCounter.DrawOrder = 101;
             Components.Add(frameRateCounter);
         }
-        
 
         protected override void Initialize()
         {
@@ -32,7 +31,7 @@ namespace PlateBall.Client
 
             menuScreen.AddMenuItem("", EntryType.Separator, null);
             menuScreen.AddMenuItem("Host game", EntryType.Screen, new PlateBallGameScreen(Content, _graphics));
-            menuScreen.AddMenuItem("Start game", EntryType.Screen, new SimpleDemo8());
+            menuScreen.AddMenuItem("Connect to game", EntryType.Screen, new SimpleDemo8());
             menuScreen.AddMenuItem("", EntryType.Separator, null);
             menuScreen.AddMenuItem("Exit", EntryType.ExitItem, null);
 
