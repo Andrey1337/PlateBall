@@ -13,7 +13,7 @@ namespace PlateBall.Server
         {
             _server = server;
             Ball = BodyFactory.CreateCircle(this, 0.3f, 0.2f, new Vector2(1, 1));
-            Ball.Move(new Vector2(1f, 3f));
+            Ball.Move(new Vector2(0.2f, 0f));
             Ball.BodyType = BodyType.Dynamic;
             Ball.Restitution = 1.01f;
 

@@ -56,6 +56,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlateBall.Client\PlateBall.Client\PlateBall.Client.csproj">
+      <Project>{90f91d9d-da55-4f22-bc74-7ff70341d253}</Project>
+      <Name>PlateBall.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlateBall.Server\PlateBall.Server.csproj">
       <Project>{334e07f5-9c02-44b6-b1e4-2961f2ff1882}</Project>
       <Name>PlateBall.Server</Name>

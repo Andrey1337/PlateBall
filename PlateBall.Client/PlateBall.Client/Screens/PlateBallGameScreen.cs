@@ -19,8 +19,6 @@ namespace PlateBall.Client.Screens
         public Player.Player Player1 { get; set; }
         public Player.Player Player2 { get; set; }
         public Server.Server Server { get; set; }
-
-        public bool IsGameStarted { get; }
         public PlateBallGameScreen(ContentManager contentManager, GraphicsDeviceManager graphics)
         {
             _contentManager = contentManager;
@@ -40,7 +38,7 @@ namespace PlateBall.Client.Screens
             Thread connectThread = new Thread(() =>
             {
                 Client client1 = new Client("Andrey", 64064,
-                    new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+                    new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000), this);
                 client1.Connect();
 
                 Thread.Sleep(1000);
@@ -50,11 +48,6 @@ namespace PlateBall.Client.Screens
 
 
             GameWorld.Load(_contentManager);
-        }
-
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
-        {
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
         public override void HandleInput(InputHelper input, GameTime gameTime)

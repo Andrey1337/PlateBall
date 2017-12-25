@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using PlateBall.Server;
 using System.Windows.Input;
+using PlateBall.Client;
 
 namespace Tester
 {

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using FarseerPhysics;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using PlateBall.Server.PackageFormat;
 
@@ -19,13 +20,10 @@ namespace PlateBall.Server
             Run
         };
 
-        private Task _task;
-
         public ClientInfo ClientInfo1 { get; private set; }
         public ClientInfo ClientInfo2 { get; private set; }
-        public bool IsReady { get; private set; }
         private ServerState _serverState;
-        private PlateBallWorld _world;
+        private readonly PlateBallWorld _world;
 
         public int Port { get; }
         public Random Random;
@@ -33,6 +31,7 @@ namespace PlateBall.Server
         {
             _serverState = ServerState.WaitForPlayers;
             Update();
+            _world = new PlateBallWorld(new Vector2(0, 0), this);
             Port = port;
             Random = new Random();
         }
@@ -45,26 +44,34 @@ namespace PlateBall.Server
                {
                    if (_serverState == ServerState.Run)
                    {
-                       Debug.WriteLine("Server start to play");
+
                        var lastIterationTime = DateTime.Now;
                        var stepSize = TimeSpan.FromSeconds(0.01);
+                       UdpClient udpSender1 = new UdpClient();
+                       udpSender1.Connect(ClientInfo1.IpAddress);
+
                        while (true)
                        {
+                           Debug.WriteLine("Server start to play");
                            while (lastIterationTime + stepSize < DateTime.Now)
                            {
+                               Debug.WriteLine("Send");
                                _world.Update(stepSize.Milliseconds);
                                byte[] sendPackage = new Package(66,
                                        JsonConvert.SerializeObject(
                                            new GameStatePackage(ConvertUnits.ToDisplayUnits(_world.Ball.Position))))
                                    .Serialize();
                                if (ClientInfo1 != null)
-                                   SendData(ClientInfo1.IpAddress, sendPackage);
+                               {
+                                   udpSender1.Send(sendPackage, sendPackage.Length);
+                               }
+
                                if (ClientInfo2 != null)
                                    SendData(ClientInfo2.IpAddress, sendPackage);
                            }
 
                            lastIterationTime += stepSize;
-                       }
+                       }                       
                    }
                }
            });
@@ -87,7 +94,6 @@ namespace PlateBall.Server
                     {
                         case 1:
                             EnterPlayer(remoteEP, package);
-
                             break;
                         case 2:
                             StartGameRequest(remoteEP, package);
@@ -158,10 +164,13 @@ namespace PlateBall.Server
 
         private void SendData(IPEndPoint ipAndress, byte[] data)
         {
+            var time = DateTime.Now;
             UdpClient udpReciever = new UdpClient();
             udpReciever.Connect(ipAndress);
             udpReciever.Send(data, data.Length);
             udpReciever.Close();
+
+            Debug.Write(DateTime.Now - time);
         }
     }
 }
