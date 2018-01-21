@@ -76,7 +76,6 @@ namespace PlateBall.Server
 
         public void Exit()
         {
-
             _doneListen = true;
             _doneSendPackets = true;
             _doneWorldUpdate = true;
@@ -96,8 +95,7 @@ namespace PlateBall.Server
                int count = 0;
 
                while (!_doneSendPackets)
-               {
-                   Debug.WriteLine(count++);
+               {                   
                    byte[] sendPackage = new Package(66, JsonConvert.SerializeObject(new GameStatePackage(ConvertUnits.ToDisplayUnits(_world.Ball.Position))))
                        .Serialize();
                    if (_clientInfo1 != null)

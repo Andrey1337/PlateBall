@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,15 @@ namespace PlateBall.Server.PackageFormat
 {
     public class GamePackage
     {
+        public byte Command { get; set; }
+         
         public int PackageLenght { get; set; }
 
         public byte[] Data { get; set; }
 
-        public GamePackage(int packageLenght = Byte.MinValue, byte[] data = null)
+        public GamePackage(byte command = Byte.MinValue, int packageLenght = Byte.MinValue, byte[] data = null)
         {
+            Command = command;
             PackageLenght = packageLenght;
             Data = data;
         }
@@ -24,6 +28,7 @@ namespace PlateBall.Server.PackageFormat
             {
                 using (BinaryWriter writer = new BinaryWriter(m))
                 {
+                    writer.Write(Command);
                     writer.Write(PackageLenght);
                     writer.Write(Data);
                 }
@@ -38,6 +43,7 @@ namespace PlateBall.Server.PackageFormat
             {
                 using (BinaryReader reader = new BinaryReader(m))
                 {
+                    result.Command = reader.ReadByte();
                     result.PackageLenght = reader.ReadInt32();
                     result.Data = reader.ReadBytes(result.PackageLenght);
                 }
