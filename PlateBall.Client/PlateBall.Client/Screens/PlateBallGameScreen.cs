@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using FarseerPhysics.Samples.ScreenSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -14,11 +15,11 @@ namespace PlateBall.Client.Screens
         private readonly ContentManager _contentManager;
         public readonly GraphicsDeviceManager Graphics;
 
-        public PlateBallWorld GameWorld;
+        private Client _client;
 
-        public Player.Player Player1 { get; set; }
-        public Player.Player Player2 { get; set; }
-        public Server.Server Server { get; set; }
+        public GameWorld GameWorld;
+
+        private Server.Server _server;
         public PlateBallGameScreen(ContentManager contentManager, GraphicsDeviceManager graphics)
         {
             _contentManager = contentManager;
@@ -30,31 +31,26 @@ namespace PlateBall.Client.Screens
 
         public override void LoadContent()
         {
-            GameWorld = new PlateBallWorld(this);
+            GameWorld = new GameWorld(this);
+            GameWorld.Load(_contentManager);
 
-            Server.Server server = new Server.Server(11000);
-            server.StartListen();
+            _server = new Server.Server(11000);
 
-            Thread connectThread = new Thread(() =>
+            Task connectThread = new Task(() =>
             {
-                Client client1 = new Client("Andrey", 64064,
-                    new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000), this);
-                client1.Connect();
-
-                Thread.Sleep(1000);
-                client1.StartGame();
+                _client = new Client("Andrey", 64064, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000), this);
+                _client.ConnectRequest();
             });
             connectThread.Start();
-
-
-            GameWorld.Load(_contentManager);
         }
 
         public override void HandleInput(InputHelper input, GameTime gameTime)
         {
             if (input.KeyboardState.IsKeyDown(Keys.Escape))
             {
-                Server.UdpServer.Close();
+                _client.Exit();
+                _server.Exit();
+
                 ExitScreen();
             }
             base.HandleInput(input, gameTime);

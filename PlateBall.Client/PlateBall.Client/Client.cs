@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PlateBall.Client.Screens;
 using PlateBall.Server.PackageFormat;
@@ -13,10 +13,16 @@ namespace PlateBall.Client
     public class Client
     {
         public string ClientName { get; }
+        private int _connectionKey;
+
         public IPEndPoint IpEndPoint { get; }
-        public int ConnectionKey { get; set; }
+
         public int Port { get; set; }
-        public bool IsConnected { get; set; }
+
+        private bool _isConnected;
+        public bool DoneListen { get; set; }
+
+        private Task _listener;
 
         private readonly PlateBallGameScreen _gameScreen;
 
@@ -37,9 +43,9 @@ namespace PlateBall.Client
             RecieveListener();
         }
 
-        public void Connect()
+        public void ConnectRequest()
         {
-            Thread serverConnectThread = new Thread(() =>
+            Task serverConnectTask = new Task(() =>
             {
                 var client = new UdpClient();
                 IPEndPoint ep = IpEndPoint;
@@ -50,59 +56,68 @@ namespace PlateBall.Client
 
                 client.Close();
             });
-            serverConnectThread.Start();
+            serverConnectTask.Start();
         }
 
-        public void StartGame()
+        public void StartGameRequest()
         {
-            Thread startGameThread = new Thread(() =>
+            Task startGameThread = new Task(() =>
             {
-                while (!IsConnected)
-                {
-                }
                 var client = new UdpClient();
                 IPEndPoint ep = IpEndPoint;
                 client.Connect(ep);
-                var package = new Package(2,
-                    JsonConvert.SerializeObject(new SessionConnectionFormat(ConnectionKey, "HELOU")));
+                var package = new Package(2, JsonConvert.SerializeObject(new SessionConnectionFormat(_connectionKey, "HELOU")));
                 client.Send(package.Serialize(), package.Serialize().Length);
-
-                Debug.WriteLine("start request sent");
                 client.Close();
             });
             startGameThread.Start();
         }
 
+        public void Exit()
+        {
+            DoneListen = true;
+        }
+
         public void RecieveListener()
         {
-            Thread listener = new Thread(() =>
+            _listener = new Task(() =>
                 {
                     UdpClient udpServer = new UdpClient(Port);
-                    while (true)
+                    while (!DoneListen)
                     {
-                        var remoteEP = new IPEndPoint(IPAddress.Any, Port);
-                        var data = udpServer.Receive(ref remoteEP);
-                        Package package = Package.Desserialize(data);
-                        switch (package.Command)
+                        try
                         {
-                            case 95:
-                                ConnectionKey = int.Parse(package.Data);
-                                IsConnected = true;
-                                Debug.WriteLine($"Client: {ClientName}, ConnectionKey: {ConnectionKey}");
-                                break;
-                            case 66:
-                                Debug.Write("GUT IT");
-
-                                _gameScreen.GameWorld.GameInfo =
-                                    JsonConvert.DeserializeObject<GameStatePackage>(package.Data);
-                                break;
+                            var remoteEp = new IPEndPoint(IPAddress.Any, Port);
+                            var data = udpServer.Receive(ref remoteEp);
+                            HandleRequest(Package.Desserialize(data));
                         }
-                        Console.WriteLine($"Recieved data => {package.Data}");
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("[{0}]\t-->\tError\n{1}\n", DateTime.Now, e.Message);
+                        }
                     }
                 }
             );
 
-            listener.Start();
+            _listener.Start();
+        }
+
+        private void HandleRequest(Package package)
+        {
+            switch (package.Command)
+            {
+                case 95:
+                    _connectionKey = int.Parse(package.Data);
+                    _isConnected = true;
+                    StartGameRequest();
+                    Debug.WriteLine($"Client: {ClientName}, ConnectionKey: {_connectionKey}");
+                    break;
+                case 66:
+                    Debug.WriteLine("Got game package");
+                    _gameScreen.GameWorld.GameInfo =
+                        JsonConvert.DeserializeObject<GameStatePackage>(package.Data);
+                    break;
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace PlateBall.Client
 
             menuScreen.AddMenuItem("", EntryType.Separator, null);
             menuScreen.AddMenuItem("Host game", EntryType.Screen, new PlateBallGameScreen(Content, _graphics));
-            menuScreen.AddMenuItem("Connect to game", EntryType.Screen, new SimpleDemo8());
+            menuScreen.AddMenuItem("ConnectRequest to game", EntryType.Screen, new SimpleDemo8());
             menuScreen.AddMenuItem("", EntryType.Separator, null);
             menuScreen.AddMenuItem("Exit", EntryType.ExitItem, null);
 

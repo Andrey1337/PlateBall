@@ -15,14 +15,14 @@ using PlateBall.Server.PackageFormat;
 
 namespace PlateBall.Client
 {
-    public class PlateBallWorld
+    public class GameWorld
     {
         private readonly PlateBallGameScreen _gameScreen;
         private Texture2D _ballTexture;
 
         public GameStatePackage GameInfo { get; set; }
 
-        public PlateBallWorld(PlateBallGameScreen gameScreen)
+        public GameWorld(PlateBallGameScreen gameScreen)
         {
             _gameScreen = gameScreen;
         }
@@ -37,6 +37,8 @@ namespace PlateBall.Client
             if (GameInfo == null)
                 return;
             spriteBatch.Draw(_ballTexture, GameInfo.BallPosition, Color.White);
+
+            //Debug.WriteLine(GameInfo.BallPosition);
         }
     }
 }

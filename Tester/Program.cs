@@ -4,6 +4,7 @@ using System.Threading;
 using PlateBall.Server;
 using System.Windows.Input;
 using PlateBall.Client;
+using PlateBall.Server.PackageFormat;
 
 namespace Tester
 {
@@ -11,20 +12,25 @@ namespace Tester
     {
         static void Main(string[] args)
         {
-            Server server = new Server(11000);
-            server.StartListen();
+           // DateTime dateTime = DateTime.Now;
 
-            Client client1 = new Client("Andrey", 64064, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
-            client1.Connect();
+           //// Console.WriteLine(DateTime.Now - dateTime);
 
-            Client client2 = new Client("Vanya", 64070, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
-            client2.Connect();
+           // Server server = new Server(11000);
+           // server.StartListen();
 
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            client1.StartGame();
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            client2.StartGame();
-            Console.ReadLine();
+           // Client client1 = new Client("Andrey", 64064, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+           // client1.ConnectRequest();
+
+           // Client client2 = new Client("Vanya", 64070, new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+           // client2.ConnectRequest();
+
+           // Thread.Sleep(TimeSpan.FromSeconds(1));
+           // client1.StartGame();
+           // Thread.Sleep(TimeSpan.FromSeconds(1));
+           // client2.StartGame();
+           // Console.ReadLine();
+          
         }
     }
 }
